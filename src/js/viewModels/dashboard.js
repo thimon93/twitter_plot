@@ -5,14 +5,33 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery'],
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojchart'],
  function(oj, ko, $) {
-  
+
     function DashboardViewModel() {
       var self = this;
       // Below are a subset of the ViewModel methods invoked by the ojModule binding
       // Please reference the ojModule jsDoc for additionaly available methods.
+      var colorHandler = new oj.ColorAttributeGroupHandler();
+              this.lineWithAreaColor = colorHandler.getValue('lineWithAreaColor');
 
+              /* chart data */
+              var values = [5, 8, 2, 7, 0, 9, 2, 3, 4, 2];
+
+              this.sparkValues = ko.observableArray(values);
+
+              var rangeValues = [{low: 5, high: 9},
+                                 {low: 3, high: 7},
+                                 {low: 3, high: 8},
+                                 {low: 5, high: 10},
+                                 {low: 7, high: 14},
+                                 {low: 8, high: 13},
+                                 {low: 6, high: 11},
+                                 {low: 4, high: 9},
+                                 {low: 1, high: 5},
+                                 {low: 2, high: 8}];
+
+              this.sparkRangeValues = ko.observableArray(rangeValues);
       /**
        * Optional ViewModel method invoked when this ViewModel is about to be
        * used for the View transition.  The application can put data fetch logic
@@ -43,7 +62,7 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
 
 
       /**
-       * Optional ViewModel method invoked after the bindings are applied on this View. 
+       * Optional ViewModel method invoked after the bindings are applied on this View.
        * If the current View is retrieved from cache, the bindings will not be re-applied
        * and this callback will not be invoked.
        * @param {Object} info - An object with the following key-value pairs:
@@ -66,6 +85,15 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
         // Implement if needed
       };
     }
+
+    var dashboard = new DashboardViewModel()
+
+    $(document).ready(
+    function()
+    {
+      ko.applyBindings(chartModel, document.getElementById('sparkChart-container'));
+    }
+    );
 
     /*
      * Returns a constructor for the ViewModel so that the ViewModel is constrcuted
